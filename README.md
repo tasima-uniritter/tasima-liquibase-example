@@ -8,6 +8,6 @@ Trabalho de Design patterns, smalls and Refectory - (Alex, Lucas)
 <h4>Spring Boot - https://projects.spring.io/spring-boot/<h4>
 <h4>Liquibase - http://www.liquibase.org/<h4>
 <h4>Gradle - https://gradle.org/</h4>
-<h4>Base HSQLDB - http://hsqldb.org/</h4>
+<h4>Base H2 - http://www.h2database.com/html/main.html</h4>
 
 <h2>Padrões de projeto:</h2>
