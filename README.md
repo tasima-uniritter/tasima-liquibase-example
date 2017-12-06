@@ -1,5 +1,9 @@
-# tasima-liquibase-example
-Trabalho de Design patterns, smalls and Refectory - (Alex, Lucas)
+# Turma Tasima - Design patterns, smalls and Refectory
+# Projeto de exemplo do liquibase
+
+Integrantes:
+  Alex:  https://github.com/alexsrosa
+  Lucas: https://github.com/LucasGentile
 
 <h2>Tecnologias utilizadas:</h2>
 
