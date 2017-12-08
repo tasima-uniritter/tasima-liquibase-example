@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - preConditions:
+    - runningAs:
+        username: SA
+
+  - changeSet:
+      id: 1
+      author: asrosa
+      changes:
+        - createTable:
+            tableName: ITStudent
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+              - column:
+                  name: age
+                  type: long
+              - column:
+                  name: dateOfBirth
+                  type: date
