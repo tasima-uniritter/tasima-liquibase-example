@@ -28,7 +28,7 @@ O Liquibase é uma ferramenta para evolução do schema de banco de dados de apl
 
 <h3>Para que serve?</h3>
 
-Para facilitar o vescionamento do vercionamento da 
+Para facilitar o vescionamento do banco de dados utilizado pela aplicação.
 
 <h3>Principais características:</h3>
 
@@ -48,11 +48,66 @@ Para facilitar o vescionamento do vercionamento da
 
 <h2>Intruçoes de instalação</h2>
 
+<h4>Passo 1: Configuração da dependência</h4>
+
+<p>Para utilizar o Liquibase em seu projeto Java, deve-se incluir a dependencia no Maven ou Gradle do projeto, a fim de carregar as libs necessárias para utilização. </p>
+
+Maven:<br>
+```
+<!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-core -->
+<dependency>
+    <groupId>org.liquibase</groupId>
+    <artifactId>liquibase-core</artifactId>
+    <version>3.5.3</version>
+</dependency>
+```
+
+Gradle:<br>
+```
+// https://mvnrepository.com/artifact/org.liquibase/liquibase-core
+compile('org.liquibase:liquibase-core')
+
+```
+No caso da utilização do Gradle, será necessário també incluir buildscript:dependencies:classpath e o comando Apply, conforme exemplo abaixo:
+
+```
+buildscript {
+	ext {
+		springBootVersion = '1.5.8.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.liquibase:liquibase-gradle-plugin:1.2.4")
+	}
+}
+
+apply plugin: 'org.liquibase.gradle'
+```
+<h4>Passo 2: Configuração do arquivo do Changelog</h4>
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+</databaseChangeLog>
+```
+
+
+
 <h2>Exemplos de uso</h2>
 
 <h2>Referências</h2>
 
-http://www.baeldung.com/liquibase-refactor-schema-of-java-app
-https://github.com/liquibase/liquibase-gradle-plugin
-https://github.com/stevesaliman/liquibase-workshop
-https://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-liquibase
+http://www.baeldung.com/liquibase-refactor-schema-of-java-app <br>
+https://github.com/liquibase/liquibase-gradle-plugin <br>
+https://github.com/stevesaliman/liquibase-workshop <br>
+https://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-liquibase <br>
+https://www.devmedia.com.br/liquibase-gerenciando-mudancas-no-banco-de-dados-de-projetos-java/37434
