@@ -119,7 +119,8 @@ Para começar a usar o Liquibase no banco de dados da aplicação, execute os do
 Gradle:<br>
 ```
 gradlew changeLogSync
-
+```
+```
 gradlew changeLogSync
 ```
 
@@ -127,11 +128,12 @@ Maven:<br>
 
 ```
 mvn liquibase:generateChangeLog
-
+```
+```
 mvn liquibase:changeLogSync
 ```
 
-generateChangeLog: Efetua a geração do log de mudanças do banco de dados.
+generateChangeLog: Efetua a geração do log de mudanças do banco de dados.<br>
 changeLogSync: Efetua o sincronismo do log de mudanças do banco de dados.
 
 
