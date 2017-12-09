@@ -37,16 +37,16 @@ Para facilitar o vescionamento do banco de dados utilizado pela aplicação.
     <li>Suporte a múltiplos desenvolvimentos;</li>
     <li>Suporte a multiplas bases (MySQL, PostgreSQL, Oracle, Sql Server, H2, etc.);</li>
     <li>Suporte a múltiplos tipos de formatos de configuração (XML, JSON, YAML e SQL);</li>
-    <li>Suporte a contextos lógicos;</li>
+    <li>Suporte a contextos lógicos ( Teste, Desenvolvimento, Homologação);</li>
     <li>Gerador de documentação de banco de dados;</li>
     <li>Gerador de comparações (DIFF);</li>
     <li>Gera automáticamente código SQL para revisão;</li>
-    <li>Gera automáticamente código sql para revisão;</li>
+    <li>Gera automáticamente código SQL para revisão;</li>
     <li>Não requer conexão com banco de dados ativa;</li>
     <li>Possui código aberto e extensível (Licença Apache 2.0);</li>
 </ul>
 
-<h2>Intruçoes de instalação</h2>
+<h2>Intruções de instalação</h2>
 
 <h4>Passo 1: Configuração da dependência</h4>
 
@@ -109,16 +109,77 @@ databaseChangeLog:
 ```
 O arquivo "db.changelog.xml" deve ser colocado no pacote "src/main/resources/db/changelog/".
 
+<h4>Passo 2: Configuração do Spring</h4>
+
+Segue abaixo configurações para subir o H2 (Banco de dados em mémoria) e também configurações especificas do liquibase: 
+
+
+
+```
+# src/main/java/resources/application.yml
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file./database/liquibase_demo;DB_CLOSE_ON_EXIT=FALSE;FILE_LOCK=NO
+    username: SA
+  h2:
+    console:
+      enabled: true
+      path: /h2
+liquibase:
+  change-log: classpath:/db/db.changelog-master.yaml
+  enabled: true
+```
+
+Em "liquibase:change-log" definimos o caminho onde o arquivo de mundaças estará localizado.<br>
+Em "liquibase:enabled" podemos setar se o liquibase estara ativo sempre que houver o build da aplicação.
+
 <h2>Exemplos de uso</h2>
 
 Com o Liquibase corretamente configurado e a aplicação desenvolvida com seus dominios (@Entity) estabelecidos, é possível executar o comando de geração de mudança do banco via Maven ou Gradle. 
+
+Exemplo de Entity:
+```
+package br.com.tasima.liquibasedemo.model;
+
+import lombok.Data;
+import lombok.NonNull;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Data
+@Entity
+@Table(name="IT_STUDENT")
+public class ITStudent {
+    @Id
+    @NonNull
+    @Column(name="ID")
+    private Long id;
+
+    @Column(name="NAME")
+    private String name;
+
+    @Column(name="AGE")
+    private Long age;
+
+    @Column(name="FAVORITE_PROGRAMMING_LANGUAGE")
+    private String favoriteProgrammingLanguage;
+}
+```
 
 Para começar a usar o Liquibase no banco de dados da aplicação, execute os dois comandos a seguir:
 
 
 Gradle:<br>
 ```
-gradlew changeLogSync
+gradlew generateChangeLog
 ```
 ```
 gradlew changeLogSync
@@ -136,6 +197,41 @@ mvn liquibase:changeLogSync
 generateChangeLog: Efetua a geração do log de mudanças do banco de dados.<br>
 changeLogSync: Efetua o sincronismo do log de mudanças do banco de dados.
 
+Após rodar o comando “generateChangeLog”, o arquivo “db.changelog.xml” será atualizado com as informações da Entity:
+
+```
+databaseChangeLog:
+- changeSet:
+    id: 1512804120619-1
+    author: Lucas_Gentile (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              constraints:
+                nullable: false
+            name: ID
+            type: BIGINT(19)
+        - column:
+            name: AGE
+            type: BIGINT(19)
+        - column:
+            name: FAVORITE_PROGRAMMING_LANGUAGE
+            type: VARCHAR(255)
+        - column:
+            name: NAME
+            type: VARCHAR(255)
+        tableName: IT_STUDENT
+- changeSet:
+    id: 1512804120619-2
+    author: Lucas_Gentile (generated)
+    changes:
+    - addPrimaryKey:
+        columnNames: ID
+        constraintName: CONSTRAINT_9
+        tableName: IT_STUDENT
+```
 
 ```
 mvn install -Dliquibase.dropFirst=true
